@@ -31,11 +31,14 @@
             {!! Form::text('name', old('name'), ['class'=>'form-control', 'placeholder'=>'Enter Name']) !!}
             <span class="text-danger">{{ $errors->first('name') }}</span>
         </div>
-        <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
+        <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}" >
             {!! Form::label('Email:') !!}
-            {!! Form::text('email', old('email'), ['class'=>'form-control', 'placeholder'=>'Enter Email']) !!}
-            <span class="text-danger">{{ $errors->first('email') }}</span>
+            {!! Form::text('email', old('email'), ['class'=>'form-control', 'placeholder'=>'Enter Email', 'id'=>'email']) !!}
+            <span class="text-danger" id="emai">{{ $errors->first('email') }}</span>
+            
+              
         </div>
+        
         <div class="form-group {{ $errors->has('pincode') ? 'has-error' : '' }}">
             {!! Form::label('Pincode:') !!}
             {!! Form::number('pincode', old('pincode'), ['class'=>'form-control', 'placeholder'=>'Enter pincode']) !!}
@@ -46,5 +49,21 @@
         </div>
     {!! Form::close() !!}
 </div>
+
+<script>
+    document.getElementById('email').addEventListener('blur', validateEmail);
+    function validateEmail() {
+  const email = document.getElementById('email');
+  const re = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
+ console.log(email.value);
+  if(!re.test(email.value)){
+    email.classList.add('is-invalid');
+    document.getElementById("emai").innerHTML = "this is not a proper email";
+  } else {
+    email.classList.remove('is-invalid');
+    document.getElementById("emai").innerHTML = "";
+  }
+}
+</script>
 </body>
 </html>
