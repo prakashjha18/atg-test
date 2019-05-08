@@ -17,4 +17,5 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-Route::get('/users','WebServicesController@getapi');
+Route::get('/user','WebServicesController@getapi');
+Route::post('/user','WebServicesController@postapi');

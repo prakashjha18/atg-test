@@ -5,6 +5,7 @@ use App\atg_form;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\atgmail;
+use Illuminate\support\Facades\Log;
 
 class ATGController extends Controller
 {
@@ -25,19 +26,11 @@ class ATGController extends Controller
         'pincode' => 'required|max:6|min:6',
         ]);
        atg_form::create($request->all());
-//        Mail::send('atgmail',
-//        array(
-//            'name' => $request->get('name'),
-//            'email' => $request->get('email'),
-//            'pincode' => $request->get('pincode')
-//        ), function($message)
-//    {
-//        $message->from('saquib.gt@gmail.com');
-//        $message->to('saquib.rizwan@cloudways.com', 'Admin')->subject('Cloudways Feedback');
-//    });
+
     $name = $request->name;
     $email = $request->email;
     Mail::to($request->email)->send(new atgmail($name,$email));
+        Log::info('Mail sent');
        return back()->with('success', 'Thanks for contacting us!');
    }
    public function list()

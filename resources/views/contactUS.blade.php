@@ -1,57 +1,64 @@
-<!DOCTYPE html>
 <html>
-<head>
-<title>Laravel 5.4 Cloudways Contact US Form Example</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-</head>
-<body>
-<div class="container">
-    <h1>Contact US Form</h1>
-    @if(Session::has('success'))
-    <div class="alert alert-success">
-        {{ Session::get('success') }}
-    </div>
-    @endif
-    @if(count($errors)>0)
-        @foreach($errors->all() as $error)
-        <div class="alert alert-danger">
-            {{$error}}
-        </div>
-        @endforeach
-    @endif 
-    @if(session('error'))
-        <div class="alert alert-danger">
-            {{session('error')}}
-        </div>
-    @endif
-
-    {!! Form::open(['route'=>'contactus.store']) !!}
-        <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
-            {!! Form::label('Name:') !!}
-            {!! Form::text('name', old('name'), ['class'=>'form-control', 'placeholder'=>'Enter Name']) !!}
-            <span class="text-danger">{{ $errors->first('name') }}</span>
-        </div>
-        <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}" >
-            {!! Form::label('Email:') !!}
-            {!! Form::text('email', old('email'), ['class'=>'form-control', 'placeholder'=>'Enter Email', 'id'=>'email']) !!}
-            <span class="text-danger" id="emai">{{ $errors->first('email') }}</span>
-            
+    <head>
+        <meta charset="utf-8">
+        <title>Contact US</title>
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Contact us</a>
+              </div>
+              <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                  <li><a href="/"></a></li>
+                  
+                </ul>
+              </div><!--/.nav-collapse -->
+            </div>
+          </nav>
+          
+          <div class="container">
+                <div id="added"></div>
+              <h1>Add item</h1>
+              <form id="itemForm">
+                  <div class="form-group">
+                    <label>name :</label>
+                    <input type="text" id="name" class="form-control">
+                    <span class="text-danger" id="nam"></span>
+                  </div>
+                  <div class="form-group">
+                        <label>email :</label>
+                        <input type="email" id="email" class="form-control">
+                        <span class="text-danger" id="emai"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>pincode :</label>
+                        <input type="text" id="pincode" class="form-control">
+                        <span class="text-danger" id="zip"></span>
+                    </div>
+                   <input type="submit" vlaue="submit" class="btn btn-primary" id="myBtn">
+                   <hr>
+              </form>
               
-        </div>
-        
-        <div class="form-group {{ $errors->has('pincode') ? 'has-error' : '' }}">
-            {!! Form::label('Pincode:') !!}
-            {!! Form::number('pincode', old('pincode'), ['class'=>'form-control', 'placeholder'=>'Enter pincode']) !!}
-            <span class="text-danger">{{ $errors->first('pincode') }}</span>
-        </div>
-        <div class="form-group">
-            <button class="btn btn-success">Contact US!</button>
-        </div>
-    {!! Form::close() !!}
-</div>
+              <ul id="items" class="list-group">
 
+              </ul>
+           </div>
 <script>
-    document.getElementById('email').addEventListener('blur', validateEmail);
+    
+    document.getElementById('pincode').addEventListener('keyup', validateZip);
+    document.getElementById('email').addEventListener('keyup', validateEmail);
     function validateEmail() {
   const email = document.getElementById('email');
   const re = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/;
@@ -64,6 +71,98 @@
     document.getElementById("emai").innerHTML = "";
   }
 }
+function validateZip() {
+  const zip = document.getElementById('pincode');
+  const re = /^[0-9]{6}$/;
+    console.log(zip.value);
+  if(!re.test(zip.value)){
+    zip.classList.add('is-invalid');
+    document.getElementById("zip").innerHTML = "pincode should be 6 digit";
+  } else {
+    zip.classList.remove('is-invalid');
+    document.getElementById("zip").innerHTML = "";
+  }
+}
 </script>
-</body>
+
+        <script
+            src="https://code.jquery.com/jquery-1.12.4.js"
+            integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
+            crossorigin="anonymous">
+        </script>
+        <script type="text/javascript">
+        $(document).ready(function(){
+            //getItems();
+
+            $('#itemForm').on('submit', function(e){
+                e.preventDefault();
+                let name = $('#name').val();
+                let email = $('#email').val();
+                let pincode = $('#pincode').val();
+                addItem(name, email, pincode);
+            });
+
+            $('body').on('click','.deleteLink', function(e){
+                e.preventDefault();
+                let id = $(this).data('id');
+                deleteItem(id);
+            });
+
+            
+
+            function addItem(name, email, pincode){
+                $.ajax({
+
+                    method:'POST',
+                    url:'http://localhost:8000/user',
+                    data: {name:name, email:email, pincode:pincode},
+                    context :document.getElementById("myBtn").disabled = true
+
+                }).done(function(item){
+                    
+                    document.getElementById("myBtn").disabled = false;
+                    let htmls = "";
+                    if(item.status=='1')
+                    {
+                        htmls = `<div class="alert alert-success alert-dismissible fade in" id="alert">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>Success!</strong> your response has been recorded
+                    </div>`;
+                    }
+                    else {
+                        htmls = `<div class="alert alert-danger alert-dismissible fade in" id="alert">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong>failed!</strong> ${item.message}
+                    </div>`
+                    }
+                    $('#added').append(htmls);
+                    setTimeout(function(){
+                    $('#alert').remove();
+                    }, 5000);
+                    document.getElementById("email").value = "";
+                    document.getElementById("name").value = "";
+                    document.getElementById("pincode").value = "";
+                });
+            }
+
+            // function getItems(){
+            //     $.ajax({
+            //         url:'http://localhost:8000/user'
+            //     }).done(function(items){
+            //         let output = '';
+            //         $.each(items,function(key,item){
+            //             output += `
+            //             <li class="list-group-item"><strong>ID : ${item.id}</strong></a></li>
+            //                 <li class="list-group-item">${item.name}</a></li>
+            //                 <li class="list-group-item">${item.email}</a></li>
+            //                 <li class="list-group-item">${item.pincode}</a></li><br>
+            //             `;
+            //         });
+            //         $('#items').append(output);
+            //     });
+            // }
+        });
+        </script>
+    </body>
+    </head>
 </html>

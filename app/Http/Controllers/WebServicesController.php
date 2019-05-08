@@ -24,7 +24,7 @@ class WebServicesController extends Controller
  
  
      if ($validator->fails()) {
-             return response()->json(['status' => '0', 'message' => $validator->messages()->all() , 'success' => false]);
+             return response()->json(['status' => '0', 'message' => $validator->messages()->all() ]);
      }
      else{
        
@@ -37,7 +37,8 @@ class WebServicesController extends Controller
         $atg->pincode=request('pincode');
         $atg->save();
         
-       return response()->json(['status'=> '1','message'=>$atg]);
+       
+       return response()->json(['status'=> '1','message'=>'yor response has been recorded']);
      }
  
     }
