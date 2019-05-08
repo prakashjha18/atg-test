@@ -21,7 +21,7 @@
               </div>
               <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                  <li><a href="/"></a></li>
+                  <li> <a href="http://localhost:8000/listing">Listings</a></li>
                   
                 </ul>
               </div><!--/.nav-collapse -->
@@ -30,7 +30,7 @@
           
           <div class="container">
                 <div id="added"></div>
-              <h1>Add item</h1>
+              <h1>Add listing</h1>
               <form id="itemForm">
                   <div class="form-group">
                     <label>name :</label>
@@ -44,13 +44,15 @@
                     </div>
                     <div class="form-group">
                         <label>pincode :</label>
-                        <input type="text" id="pincode" class="form-control">
+                        <input type="number" id="pincode" class="form-control">
                         <span class="text-danger" id="zip"></span>
                     </div>
                    <input type="submit" vlaue="submit" class="btn btn-primary" id="myBtn">
-                   <hr>
+                   
+                  
               </form>
               
+              <hr>
               <ul id="items" class="list-group">
 
               </ul>
@@ -134,14 +136,15 @@ function validateZip() {
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         <strong>failed!</strong> ${item.message}
                     </div>`
+                    document.getElementById("email").value = "";
                     }
                     $('#added').append(htmls);
                     setTimeout(function(){
                     $('#alert').remove();
-                    }, 2900);
-                    document.getElementById("email").value = "";
-                    document.getElementById("name").value = "";
-                    document.getElementById("pincode").value = "";
+                    }, 2200);
+                    // document.getElementById("email").value = "";
+                    // document.getElementById("name").value = "";
+                    // document.getElementById("pincode").value = "";
                 });
             }
 

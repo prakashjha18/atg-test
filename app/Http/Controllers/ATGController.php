@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\atgmail;
 use Illuminate\support\Facades\Log;
+use App\Traits\reuse;
 
 class ATGController extends Controller
 {
+    use reuse;
     public function contactUS()
    {
        return view('contactUS');
@@ -20,17 +22,19 @@ class ATGController extends Controller
     */
    public function contactUSPost(Request $request)
    {
-       $this->validate($request, [
-        'name' => 'required',
-        'email' => 'required|email|max:255|regex:/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/|unique:atg_form',
-        'pincode' => 'required|max:6|min:6',
-        ]);
-       atg_form::create($request->all());
+    //    $this->validate($request, [
+    //     'name' => 'required',
+    //     'email' => 'required|email|max:255|regex:/^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/|unique:atg_form',
+    //     'pincode' => 'required|max:6|min:6',
+    //     ]);
+    $validator = $this->validateFields($request);
+    //   atg_form::create($request->all());
 
-    $name = $request->name;
-    $email = $request->email;
-    Mail::to($request->email)->send(new atgmail($name,$email));
-        Log::info('Mail sent');
+    // $name = $request->name;
+    // $email = $request->email;
+    // Mail::to($request->email)->send(new atgmail($name,$email));
+     //   Log::info('Mail sent');
+        $this->insertData($request);
        return back()->with('success', 'Thanks for contacting us!');
    }
    public function list()

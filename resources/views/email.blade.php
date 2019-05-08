@@ -3,5 +3,5 @@
         <br>
         your email : {{ $email }}
         <br>
-        your informmation has been recorded
+        your information has been recorded
     </div>
