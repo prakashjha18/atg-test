@@ -138,7 +138,7 @@ function validateZip() {
                     $('#added').append(htmls);
                     setTimeout(function(){
                     $('#alert').remove();
-                    }, 5000);
+                    }, 2900);
                     document.getElementById("email").value = "";
                     document.getElementById("name").value = "";
                     document.getElementById("pincode").value = "";
