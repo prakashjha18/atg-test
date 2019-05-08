@@ -17,3 +17,5 @@ Route::get('/', function () {
 Route::get('contact-us', ['as'=>'contactus.home','uses'=>'ATGController@contactUS']);
 Route::post('contact-us', ['as'=>'contactus.store','uses'=>'ATGController@contactUSPost']);
 Route::get('listing', ['as'=>'contactus.list','uses'=>'ATGController@list']);
+Route::get('/user','WebServicesController@getapi');
+Route::post('/user','WebServicesController@postapi');
